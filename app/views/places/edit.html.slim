@@ -1,0 +1,6 @@
+h1 Colaborar com tipo do local
+
+= simple_form_for(@place) do |f|
+  = f.input :kind, collection: Place.kinds
+
+  = f.button :submit

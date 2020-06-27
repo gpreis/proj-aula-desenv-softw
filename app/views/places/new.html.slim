@@ -1,0 +1,13 @@
+h1 Adicionar Local
+
+= simple_form_for(@place) do |f|
+  = f.input :name
+  = f.input :street
+  = f.input :number
+  = f.input :district
+  = f.input :zip_code
+  = f.input :city
+  = f.input :state
+  = f.input :complement
+
+  = f.button :submit

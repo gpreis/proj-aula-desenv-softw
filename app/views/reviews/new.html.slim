@@ -1,0 +1,8 @@
+h1 = "Avaliando #{@place.name}"
+
+= simple_form_for([@place, @review]) do |f|
+  = f.input :score
+  = f.input :comment
+
+  = f.button :submit
+

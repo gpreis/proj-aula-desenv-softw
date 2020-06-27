@@ -1,0 +1,46 @@
+h1 Lugares
+
+.card
+  .card-body
+    h6.card-subtitle.mb-2.text-muted Filtros
+    = search_form_for @q do |f|
+      = f.label 'Tipo'
+      = f.select :kind_eq, Place.kinds, include_blank: true
+      = f.submit 'Buscar'
+      = link_to 'Limpar', places_path
+
+table.table
+  thead
+    tr
+      / th scope="col" #
+      th scope="col" name
+      th scope="col" tipo
+      th scope="col"
+  tbody
+    - @places.each do |p|
+      tr
+        / th = p.id
+        td = p.name
+        td = p.kind
+        td
+          .float-right
+            span style="padding-right: 20px;"
+              = link_to 'Ver detalhes', place_path(p)
+            span
+              = link_to 'Informar tipo', edit_place_path(p)
+
+div style=("width: 800px;") 
+  #map style=("width: 800px; height: 400px;") 
+
+= link_to 'Adicionar Local', new_place_path, class: 'btn btn-info'
+
+javascript:
+  var hash_map = #{raw @hash.to_json};
+  $(document).on('ready page:load', function () {
+    handler = Gmaps.build('Google');
+    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+        markers = handler.addMarkers(hash_map);
+        handler.bounds.extendWith(markers);
+        handler.fitMapToBounds();
+    });
+  });

@@ -1,0 +1,45 @@
+h3 = "#{@place.name} - #{@place.kind}"
+h5 = @place.formatted_address
+
+div style=("width: 800px;") 
+  #map style=("width: 800px; height: 400px;")
+
+br/
+br/
+h3 Avaliações
+
+- @place.reviews.each do |r|
+  .card
+    .card-body
+      h6.card-subtitle.mb-2.text-muted = "Nota #{r.score}/10 por #{r.user.email}"
+      p.card-text = r.comment
+      = link_to 'Remover', review_path(r), method: :delete, class: 'card-link' if r.user_id == current_user.id
+
+= link_to 'Avaliar', new_place_review_path(@place), class: 'btn btn-info'
+= link_to 'Voltar', places_path, class: 'btn btn-info'
+
+br/
+br/
+h3 Fotos
+
+- @place.photos.each do |p|
+  .card
+    .card-body
+      = image_tag p.image.expiring_url, class: 'img-fluid'
+
+= link_to 'Adicionar Foto', new_place_photo_path(@place), class: 'btn btn-info'
+= link_to 'Voltar', places_path, class: 'btn btn-info'
+
+
+javascript:
+  var hash_map = #{raw @hash.to_json};
+  $(document).on('ready page:load', function () {
+    handler = Gmaps.build('Google');
+    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+        markers = handler.addMarkers(hash_map);
+        handler.bounds.extendWith(markers);
+        handler.fitMapToBounds();
+    });
+  });
+
+

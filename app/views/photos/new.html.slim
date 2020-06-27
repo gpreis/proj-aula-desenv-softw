@@ -1,0 +1,7 @@
+h1 = "Adicionando foto a #{@place.name}"
+
+= simple_form_for([@place, @photo]) do |f|
+  = f.input :image, as: :file
+
+  = f.button :submit
+
